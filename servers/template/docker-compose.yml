@@ -1,0 +1,31 @@
+networks:
+  nexb_net:
+    external: true
+
+services:
+  server:
+    image: nexb-env-web
+    restart: unless-stopped
+    networks:
+      nexb_net:
+        ipv4_address: 10.10.10.10
+    # ports:
+    #   - "8082:80"
+    #   - "8443:443"
+    expose:
+      - '80'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    volumes:
+      - /etc/localtime:/etc/localtime:ro # linux only
+      - ./apache2/apache2.conf:/etc/apache2/apache2.conf
+      - ./apache2/sites-enabled:/etc/apache2/sites-enabled
+      - ./log/apache2:/var/log/apache2
+      - ./php/php.ini:/usr/local/etc/php/php.ini
+      - ./www:/var/www
+    working_dir: /var/www
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "0.50" # 50%
+    #       memory: 2048M # 2GB

@@ -1,0 +1,14 @@
+FROM docker.io/php:7.2-apache-buster AS build
+COPY --from=composer:2.7.7 /usr/bin/composer /usr/bin/composer
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN chmod 0755 /usr/local/bin/install-php-extensions
+RUN install-php-extensions bcmath calendar gd pdo_sqlsrv sqlsrv wddx zip
+RUN docker-php-ext-enable bcmath calendar gd pdo_sqlsrv sqlsrv wddx zip
+RUN a2enmod rewrite
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+RUN deluser www-data 2>/dev/null || true
+RUN addgroup --gid ${GROUP_ID} www-data \
+    && useradd --uid ${USER_ID} --gid www-data -d /var/www-data -s /usr/sbin/nologin -M www-data
+USER www-data
+EXPOSE 80 443

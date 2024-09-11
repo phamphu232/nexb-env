@@ -1,0 +1,30 @@
+networks:
+  nexb_net:
+    external: true
+
+services:
+  proxy:
+    # image: nginx:1.27-alpine3.20-slim
+    build:
+      context: .
+      dockerfile: ./nginx.Dockerfile
+      args:
+        USER_ID: ${USER_ID:-1000}
+        GROUP_ID: ${GROUP_ID:-1000}
+    container_name: nexb-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro # linux only
+      - ./nginx:/etc/nginx:ro
+      - ./log/nginx:/var/log/nginx
+    networks:
+      nexb_net:
+        ipv4_address: 10.10.10.10
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "0.50" # 50%
+    #       memory: 2048M # 2GB

@@ -1,0 +1,9 @@
+# Stage 1: Build
+FROM docker.io/nginx:1.27-alpine3.20-slim AS build
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+RUN deluser nginx 2>/dev/null || true
+RUN addgroup -g ${GROUP_ID} nginx \
+    && adduser -u ${USER_ID} -G nginx -h /var/cache/nginx -s /sbin/nologin -D nginx
+EXPOSE 80 443
+CMD ["nginx", "-g", "daemon off;"]
