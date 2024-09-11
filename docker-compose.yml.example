@@ -7,7 +7,7 @@ services:
     # image: nginx:1.27-alpine3.20-slim
     build:
       context: .
-      dockerfile: ./nginx.Dockerfile
+      dockerfile: ./Dockerfile.nginx
       args:
         USER_ID: ${USER_ID:-1000}
         GROUP_ID: ${GROUP_ID:-1000}

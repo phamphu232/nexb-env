@@ -1,5 +1,5 @@
 
-# nexb-ENV
+# NEXB-ENV
 
 ## 1. Preparing
 
