@@ -6,3 +6,7 @@
 servers/*
 !servers/template/
 !servers/template/*
+
+nginx/conf.d/*
+!nginx/conf.d/default.conf
+!nginx/conf.d/hello-world.local.conf
